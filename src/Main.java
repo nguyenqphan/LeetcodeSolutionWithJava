@@ -6,7 +6,27 @@ public class Main {
 	// write your code here
     }
 
-    //Min Cost Climbing Stairs - Easy - Using DP
+    //740. Delete and Earn - Medium - Using DP
+    //Convert it to a problem similar to house robber.
+    public int deleteAndEarn(int[] nums) {
+        int[] count = new int[10001];
+        for(int i = 0; i < nums.length; i++)
+        {
+            count[nums[i]] += nums[i];
+        }
+
+        int[] total = new int[10001];
+        total[0] = count[0];
+        total[1] = Math.max(count[0], count[1]);
+
+        for(int i = 2; i < 10001; i++)
+        {
+            total[i] = Math.max(count[i] + total[i - 2], total[i - 1]);
+        }
+
+        return total[10000];
+    }
+    //746. Min Cost Climbing Stairs - Easy - Using DP
     public int minCostClimbingStairs(int[] cost) {
         int pay[] = new int[cost.length + 1];
 
