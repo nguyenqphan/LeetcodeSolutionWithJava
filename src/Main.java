@@ -1,11 +1,64 @@
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
-
+import javafx.util.Pair;
+import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
 	// write your code here
+    }
+
+    //743. Network Delay Time - Medium - Using Dijkstra 
+    public int networkDelayTime(int[][] times, int n, int k) {
+        Map<Integer, List<Pair<Integer, Integer>>> adjacencies = new HashMap<>();
+
+        for(int[] time : times)
+        {
+            adjacencies.putIfAbsent(time[0], new ArrayList<>());
+            adjacencies.get(time[0]).add(new Pair<>(time[1], time[2]));
+        }
+
+        int[] distances = new int[n + 1];
+        Arrays.fill(distances, Integer.MAX_VALUE);
+
+        dijkstra(adjacencies, distances, k, n);
+
+        int answer = Integer.MIN_VALUE;
+        for(int i = 1; i < distances.length; i++)
+            answer = Math.max(answer, distances[i]);
+
+        // INT_MAX signifies atleat one node is unreachable
+        return answer == Integer.MAX_VALUE ? -1 : answer;
+    }
+
+    public void dijkstra(Map<Integer, List<Pair<Integer, Integer>>> adjacencies, int[] distances, int source, int n)
+    {
+        Queue<Pair<Integer, Integer>> pq = new PriorityQueue<>((a , b) -> a.getValue() - b.getValue());
+        pq.add(new Pair<>(source, 0));
+
+        //time for staring node is 0
+        distances[source] = 0;
+
+        while(pq.size() > 0)
+        {
+            Pair<Integer, Integer> curr = pq.remove();
+            int currNode = curr.getKey();
+            int currNodeTime = curr.getValue();
+
+            if(currNodeTime > distances[currNode] || !adjacencies.containsKey(currNode))
+                continue;
+
+            for(Pair<Integer, Integer> edge : adjacencies.get(currNode))
+            {
+                int time = edge.getValue();
+                int neighborNode = edge.getKey();
+
+                if(distances[neighborNode] > time + currNodeTime)
+                {
+                    distances[neighborNode] = time + currNodeTime;
+                    pq.add(new Pair<>(neighborNode, distances[neighborNode]));
+                }
+            }
+
+        }
     }
 
     //1168. Optimize Water Distribution in a Village - Using Kruskal's Algo and Union Find
