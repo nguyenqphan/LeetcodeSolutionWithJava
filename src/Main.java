@@ -6,7 +6,68 @@ public class Main {
 	// write your code here
     }
 
-    //743. Network Delay Time - Medium - Using Dijkstra 
+    //1514. Path with Maximum Probability - Medium - Use Dijkstra
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+
+        Map<Integer, List<ProbNode>> adjacencies = new HashMap<>();
+        for(int i = 0; i < edges.length; i++)
+        {
+            int p1 = edges[i][0];
+            int p2 = edges[i][1];
+            double probility = succProb[i];
+
+            adjacencies.putIfAbsent(p1, new ArrayList<>());
+            adjacencies.get(p1).add(new ProbNode(p2, probility));
+
+            adjacencies.computeIfAbsent(p2, x -> new ArrayList<>()).add(new ProbNode(p1, probility));
+        }
+
+        double[] probilities = new double[n];
+        Arrays.fill(probilities, 0);
+
+        //descending order
+        Queue<ProbNode> pq = new PriorityQueue<ProbNode>((a, b) -> Double.compare(b.probility, a.probility));
+        probilities[start] = 1; //program still works without this, but will visited the start node again
+        pq.add(new ProbNode(start, 1));
+
+        while(pq.size() > 0)
+        {
+            ProbNode curr = pq.poll();
+            int currNode = curr.node;
+
+            double currNodeProbility = curr.probility;
+            if(currNode == end)
+                return currNodeProbility;
+
+            if(adjacencies.containsKey(currNode))
+            {
+                for(ProbNode neighbor: adjacencies.get(currNode))
+                {
+                    if(probilities[neighbor.node] < neighbor.probility * currNodeProbility)
+                    {
+                        probilities[neighbor.node] = neighbor.probility * currNodeProbility;
+                        pq.add(new ProbNode(neighbor.node, probilities[neighbor.node]));
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    public class ProbNode
+    {
+        int node;
+        double probility;
+
+        public ProbNode(int node, double probility)
+        {
+            this.node = node;
+            this.probility = probility;
+        }
+    }
+
+    //743. Network Delay Time - Medium - Using Dijkstra
     public int networkDelayTime(int[][] times, int n, int k) {
         Map<Integer, List<Pair<Integer, Integer>>> adjacencies = new HashMap<>();
 
