@@ -6,6 +6,20 @@ public class Main {
 	// write your code here
     }
 
+    //Min Cost Climbing Stairs - Easy - Using DP
+    public int minCostClimbingStairs(int[] cost) {
+        int pay[] = new int[cost.length + 1];
+
+        for(int i = 2; i <= cost.length; i++)
+        {
+            int oneStep = pay[i - 1] + cost[i - 1];
+            int twoStep = pay[i - 2] + cost[i - 2];
+
+            pay[i] = Math.min(oneStep, twoStep);
+        }
+
+        return pay[cost.length];
+    }
     //198. House Robber - Medium - Using Dp
     public int rob(int[] nums) {
         if(nums.length == 1)
