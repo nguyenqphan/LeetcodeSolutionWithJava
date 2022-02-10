@@ -6,6 +6,51 @@ public class Main {
 	// write your code here
     }
 
+    //505. The Maze II - Medium - Using Dijkstra and PriorityQueue
+    public int shortestDistance(int[][] maze, int[] start, int[] destination) {
+        int[][] distance = new int[maze.length][maze[0].length];
+        for(int[] row: distance)
+            Arrays.fill(row, Integer.MAX_VALUE);
+
+        distance[start[0]][start[1]] = 0; //starting position
+        int[][] dirs = {{0, 1}, {0, - 1}, {1, 0}, {-1, 0}};
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a,b) -> Integer.compare(a[2], b[2]));
+
+        queue.offer(new int[]{start[0], start[1], 0});
+
+        while(queue.size() > 0)
+        {
+            int[] curr = queue.poll();
+            int row = curr[0];
+            int col = curr[1];
+            int dis = curr[2];
+
+            if(distance[row][col] < dis)
+                continue;
+
+            for(int[] dir : dirs)
+            {
+                int r = row + dir[0];
+                int c = col + dir[1];
+                int count = 0;
+                while(r >= 0 && r < maze.length && c >= 0 && c < maze[0].length && maze[r][c] == 0)
+                {
+                    r += dir[0];
+                    c += dir[1];
+                    count++;
+                }
+
+                if(distance[row][col] + count < distance[r - dir[0]][c - dir[1]])
+                {
+                    distance[r - dir[0]][c - dir[1]] = distance[row][col] + count;
+                    queue.offer(new int[]{r - dir[0], c - dir[1], distance[r - dir[0]][c - dir[1]]});
+                }
+            }
+
+        }
+
+        return distance[destination[0]][destination[1]] == Integer.MAX_VALUE? -1 : distance[destination[0]][destination[1]];
+    }
     //1514. Path with Maximum Probability - Medium - Use Dijkstra
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
 
@@ -14,20 +59,20 @@ public class Main {
         {
             int p1 = edges[i][0];
             int p2 = edges[i][1];
-            double probility = succProb[i];
+            double probabilities = succProb[i];
 
             adjacencies.putIfAbsent(p1, new ArrayList<>());
-            adjacencies.get(p1).add(new ProbNode(p2, probility));
+            adjacencies.get(p1).add(new ProbNode(p2, probabilities));
 
-            adjacencies.computeIfAbsent(p2, x -> new ArrayList<>()).add(new ProbNode(p1, probility));
+            adjacencies.computeIfAbsent(p2, x -> new ArrayList<>()).add(new ProbNode(p1, probabilities));
         }
 
-        double[] probilities = new double[n];
-        Arrays.fill(probilities, 0);
+        double[] probabilities = new double[n];
+        Arrays.fill(probabilities, 0);
 
         //descending order
         Queue<ProbNode> pq = new PriorityQueue<ProbNode>((a, b) -> Double.compare(b.probility, a.probility));
-        probilities[start] = 1; //program still works without this, but will visited the start node again
+        probabilities[start] = 1; //program still works without this, but will visited the start node again
         pq.add(new ProbNode(start, 1));
 
         while(pq.size() > 0)
@@ -35,18 +80,18 @@ public class Main {
             ProbNode curr = pq.poll();
             int currNode = curr.node;
 
-            double currNodeProbility = curr.probility;
+            double currNodeProbability = curr.probility;
             if(currNode == end)
-                return currNodeProbility;
+                return currNodeProbability;
 
             if(adjacencies.containsKey(currNode))
             {
                 for(ProbNode neighbor: adjacencies.get(currNode))
                 {
-                    if(probilities[neighbor.node] < neighbor.probility * currNodeProbility)
+                    if(probabilities[neighbor.node] < neighbor.probility * currNodeProbability)
                     {
-                        probilities[neighbor.node] = neighbor.probility * currNodeProbility;
-                        pq.add(new ProbNode(neighbor.node, probilities[neighbor.node]));
+                        probabilities[neighbor.node] = neighbor.probility * currNodeProbability;
+                        pq.add(new ProbNode(neighbor.node, probabilities[neighbor.node]));
                     }
                 }
             }
