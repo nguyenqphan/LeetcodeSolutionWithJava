@@ -6,6 +6,31 @@ public class Main {
 	// write your code here
     }
 
+    //1143. Longest Common Subsequence - Medium - Top Down DP
+    public int longestCommonSubsequence(String text1, String text2) {
+        return longestCommonSubsequenceHelper(text1, text2, 0, 0, new Integer[text1.length()][text2.length()]);
+    }
+
+    public int longestCommonSubsequenceHelper(String text1, String text2, int i, int j, Integer[][] memo)
+    {
+        if(i == text1.length() || j == text2.length())
+            return 0;
+
+        if(memo[i][j] != null)
+            return memo[i][j];
+
+        if(text1.charAt(i) == text2.charAt(j))
+        {
+            return 1 + longestCommonSubsequenceHelper(text1, text2, i + 1, j + 1, memo);
+        }
+        else
+        {
+            int first = longestCommonSubsequenceHelper(text1, text2, i, j + 1, memo);
+            int second = longestCommonSubsequenceHelper(text1, text2, i + 1, j, memo);
+
+            return memo[i][j] = Math.max(first, second);
+        }
+    }
     //1770. Maximum Score from Performing Multiplication Operations - Medium -Using DP
     public int maximumScore(int[] nums, int[] multipliers) {
         int m = nums.length;
