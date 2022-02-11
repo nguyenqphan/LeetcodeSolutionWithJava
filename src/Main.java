@@ -6,6 +6,34 @@ public class Main {
 	// write your code here
     }
 
+    //1770. Maximum Score from Performing Multiplication Operations - Medium -Using DP
+    public int maximumScore(int[] nums, int[] multipliers) {
+        int m = nums.length;
+        int n = multipliers.length;
+        int left = 0;
+        int i = 0;
+        //right = m - 1 - (i - left);
+        int[][] dp = new int[multipliers.length][nums.length];
+
+        maximumScoreHelper(nums, multipliers, dp, m, n, i, left);
+
+        return dp[0][0];
+    }
+
+    public int maximumScoreHelper(int[] nums, int[] multipliers, int[][] dp, int m, int n, int i, int left)
+    {
+        if(i == n)
+            return 0;
+
+        if(dp[i][left] == 0)
+        {
+            int chooseLeft = multipliers[i]  * nums[left] + maximumScoreHelper(nums, multipliers, dp, m, n, i + 1, left + 1);
+            int chooseRight = multipliers[i] * nums[m - 1 - (i - left)] + maximumScoreHelper(nums, multipliers, dp, m, n, i + 1, left);
+            dp[i][left] = Math.max(chooseLeft, chooseRight);
+        }
+
+        return dp[i][left];
+    }
     //740. Delete and Earn - Medium - Using DP
     //Convert it to a problem similar to house robber.
     public int deleteAndEarn(int[] nums) {
