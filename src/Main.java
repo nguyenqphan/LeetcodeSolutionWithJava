@@ -6,6 +6,29 @@ public class Main {
 	// write your code here
     }
 
+    //221. Maximal Square - Medium - Bottom Up DB
+    public static int maximalSquare(char[][] matrix) {
+        int[][] memo = new int[matrix.length + 1][matrix[0].length + 1];
+        int length = 0;
+
+        for(int i = 1; i <= matrix.length; i++)
+        {
+            for(int j = 1; j <= matrix[0].length; j++)
+            {
+                if(matrix[i- 1][j- 1] == '1')
+                {
+                    int top = memo[i - 1][j];
+                    int left = memo[i][j - 1];
+                    int topLeft = memo[i - 1][j - 1];
+
+                    memo[i][j] = Math.min(Math.min(top, left), topLeft) + 1;
+                    length = Math.max(length, memo[i][j]);
+                }
+            }
+        }
+
+        return length * length;
+    }
     //1143. Longest Common Subsequence - Medium - Top Down DP
     public int longestCommonSubsequence_BottomUpDP(String text1, String text2) {
         int[][] memo = new int[text1.length() + 1][text2.length() + 1];
