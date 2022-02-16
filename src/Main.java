@@ -6,6 +6,43 @@ public class Main {
 	// write your code here
     }
 
+    //1335. Minimum Difficult of a job Schedule - Hard - Top Down DP
+    public static int minDifficulty(int[] jobDifficulty, int d) {
+        if(jobDifficulty.length < d)
+            return -1;
+
+        Integer[][] memo = new Integer[jobDifficulty.length][d + 1];
+        return minDifficultyHelper(jobDifficulty, 0, d - 1, memo);
+    }
+
+    public static int minDifficultyHelper(int[] jobDifficulty, int index, int d, Integer[][] memo)
+    {
+        //this is the last day, we have to finish all the job
+        if(d == 0)
+        {
+            int max = jobDifficulty[index];
+            for(int i = index + 1; i < jobDifficulty.length; i++)
+            {
+                max = Math.max(max, jobDifficulty[i]);
+            }
+
+            return max;
+        }
+
+        if(memo[index][d] != null)
+            return memo[index][d];
+
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+
+        for(int i = index; i < jobDifficulty.length - d; i++)
+        {
+            max = Math.max(jobDifficulty[i], max);
+            min = Math.min(min, max + minDifficultyHelper(jobDifficulty, i + 1, d - 1, memo));
+        }
+
+        return memo[index][d] = min;
+    }
     //221. Maximal Square - Medium - Bottom Up DB
     public static int maximalSquare(char[][] matrix) {
         int[][] memo = new int[matrix.length + 1][matrix[0].length + 1];
