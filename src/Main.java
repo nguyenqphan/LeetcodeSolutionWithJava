@@ -5,8 +5,28 @@ public class Main {
     public static void main(String[] args) {
 
     }
+    //300. Longest increase subsequence - Medium - Bottom Up DP
+    public int lengthOfLIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
 
-    //139. Word Break - Medium - Top down Dp without HashMap
+        for(int i = nums.length - 1; i >= 0; i--)
+        {
+            for(int j = i + 1; j< nums.length; j++)
+            {
+                if(nums[i] < nums[j])
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+
+        int max = 0;
+        for(int num : dp)
+            max = Math.max(num,max);
+
+        return max;
+    }
+
+    //139. Word Break - Medium - Top down Dp without Set
     public static boolean wordBreak(String s, List<String> wordDict) {
         Boolean[] memo = new Boolean[s.length()];
 
