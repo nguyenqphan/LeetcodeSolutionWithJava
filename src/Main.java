@@ -3,7 +3,41 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+
+    }
+
+    //139. Word Break - Medium - Top down Dp without HashMap
+    public static boolean wordBreak(String s, List<String> wordDict) {
+        Boolean[] memo = new Boolean[s.length()];
+
+        return wordBreakHelper(s, 0, wordDict, memo);
+    }
+
+    public static boolean wordBreakHelper(String s, int index, List<String> wordDict,Boolean[] memo)
+    {
+        if(index == s.length())
+        {
+            return true;
+        }
+
+        if(memo[index] != null)
+            return memo[index];
+
+        for(int i = 0; i < wordDict.size(); i++)
+        {
+            String word = wordDict.get(i);
+            if(index + word.length() <= s.length())
+            {
+                String partialWord = s.substring(index, index + word.length());
+
+                if(word.equals(partialWord) && wordBreakHelper(s, index + word.length(), wordDict, memo))
+                {
+                    return memo[index] = true;
+                }
+            }
+        }
+
+        return memo[index] = false;
     }
 
     //1335. Minimum Difficult of a job Schedule - Hard - Top Down DP
