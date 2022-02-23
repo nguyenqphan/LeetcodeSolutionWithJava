@@ -3,7 +3,40 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+    }
 
+    //31. Next Permutation - Medium
+    public  static void nextPermutation(int[] nums) {
+        int i = nums.length - 2;
+        while(i >= 0 && nums[i] >= nums[i + 1])
+        {
+            i--;
+        }
+
+        if(i >= 0)
+        {
+            int j = nums.length - 1;
+            while(j >= 0 && nums[j] <= nums[i])
+                j--;
+
+            nextPermutationSwap(nums, i, j);
+        }
+        nextPermutationReverse(nums, i + 1, nums.length - 1);
+    }
+
+    public  static void nextPermutationSwap(int[] nums, int i, int j)
+    {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public  static void nextPermutationReverse(int[] nums, int i, int j)
+    {
+        while(i < j)
+        {
+            nextPermutationSwap(nums, i++,j--);
+        }
     }
     //300. Longest increase subsequence - Medium - Bottom Up DP
     public int lengthOfLIS(int[] nums) {
@@ -512,3 +545,4 @@ public class Main {
         return Math.abs(x[0] - y[0]) + Math.abs(x[1] - y[1]);
     }
 }
+
