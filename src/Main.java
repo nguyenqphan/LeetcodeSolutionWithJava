@@ -5,6 +5,34 @@ public class Main {
     public static void main(String[] args) {
     }
 
+    //6. Zizzag conversion - Medium 
+    public static String convert(String s, int numRows) {
+        if(numRows == 1)
+            return s;
+
+        int maxRow = Math.min(s.length(), numRows);
+        StringBuilder[] rows = new StringBuilder[maxRow];
+        for(int i = 0; i < maxRow; i++)
+        {
+            rows[i] = new StringBuilder();
+        }
+        int currentRow = 0;
+        boolean goingDown = false;
+
+        for(char c : s.toCharArray())
+        {
+            rows[currentRow].append(c);
+            if(currentRow == 0 || currentRow == maxRow - 1)
+                goingDown = !goingDown;
+            currentRow += goingDown? 1 : -1;
+        }
+        StringBuilder res = new StringBuilder();
+        for(StringBuilder sb : rows)
+        {
+            res.append(sb);
+        }
+        return res.toString();
+    }
     //31. Next Permutation - Medium
     public  static void nextPermutation(int[] nums) {
         int i = nums.length - 2;
