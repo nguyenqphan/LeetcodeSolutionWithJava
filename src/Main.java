@@ -4,11 +4,34 @@ import java.util.*;
 import static java.util.List.*;
 
 public class Main {
+    public static void main(String[] args) {}
+    //16. 3sum closest - medium
+    public static int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int closest = Integer.MAX_VALUE;
+        int res = Integer.MAX_VALUE;
+        int size = nums.length - 1;
 
-    public static void main(String[] args) {
-        
+        for(int j = 0; j <= size - 1; j++)
+        {
+            int left = j + 1;
+            int right = size;
+            while(left < right)
+            {
+                int sum = nums[j] + nums[left] + nums[right];
+                if(Math.abs(closest) > Math.abs(target - sum))
+                {
+                    closest = target - sum;
+                    res = sum;
+                }
+                else if(sum < target)
+                    left++;
+                else
+                    right--;
+            }
+        }
+        return res;
     }
-
     //18. 4sum - Medium
     public static List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> res = new ArrayList<>();
