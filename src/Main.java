@@ -9,7 +9,51 @@ public class Main {
         
     }
 
-    //15. 3Sum - Medium
+    //18. 4sum - Medium
+    public static List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        int size = nums.length - 1;
+        if(nums.length < 4)
+            return res;
+
+        Arrays.sort(nums);
+        for(int i = 0; i <= size - 3; i++)
+        {
+            if(i != 0 && nums[i] == nums[i - 1])
+                continue;
+
+            for(int j = i + 1; j <= size - 2; j++)
+            {
+                if(j != i + 1 && nums[j] == nums[j - 1])
+                    continue;
+
+                int left = j + 1;
+                int right = size;
+                while(left < right)
+                {
+                    int sum = nums[i] + nums[j] + nums[left] + nums[right];
+                    if(sum == target)
+                    {
+                        List<Integer> ans = Arrays.asList(nums[i], nums[j], nums[left++], nums[right--]);
+                        res.add(ans);
+                        while(left < right && nums[left] == nums[left - 1])
+                            left++;
+                    }else if(sum < target)
+                    {
+                        left++;
+                    }else
+                    {
+                        right--;
+                    }
+
+                }
+            }
+        }
+
+        return res;
+    }
+
+    //15. 3Sum And Two sum - Medium
     public static List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
