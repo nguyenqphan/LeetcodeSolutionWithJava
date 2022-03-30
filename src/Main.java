@@ -6,6 +6,31 @@ import static java.util.List.*;
 public class Main {
     public static void main(String[] args) {}
 
+    //39. Combination Sum - Medium
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        combinationSumHelper(candidates, target, 0, new ArrayList<>(), res);
+        return res;
+    }
+
+    public static void combinationSumHelper(int[] candidates, int target, int start, List<Integer> combination, List<List<Integer>> res)
+    {
+        if(target == 0)
+        {
+            res.add(new ArrayList<>(combination));
+            return;
+        }else if(target < 0)
+        {
+            return;
+        }
+
+        for(int i = start; i < candidates.length; i++)
+        {
+            combination.add(candidates[i]);
+            combinationSumHelper(candidates, target - candidates[i], i, combination, res);
+            combination.remove(combination.size() - 1);
+        }
+    }
     //38. Count and Say - Medium
     public static String countAndSay(int n) {
         String res = "1";
