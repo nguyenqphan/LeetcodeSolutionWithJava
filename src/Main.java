@@ -5,7 +5,41 @@ import static java.util.List.*;
 
 public class Main {
     public static void main(String[] args) {}
-    //32. Find the First and Last Position of Element in a sorted Array - Medium
+
+    //38. Count and Say - Medium
+    public static String countAndSay(int n) {
+        String res = "1";
+
+        for(int i = 1; i < n; i++)
+        {
+            res = countAndSayHelper(res);
+        }
+
+        return res;
+    }
+
+    public static String countAndSayHelper(String res)
+    {
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        char say = res.charAt(0);
+        for(int i = 1; i < res.length(); i++)
+        {
+            if(say == res.charAt(i))
+            {
+                count++;
+            }
+            else
+            {
+                sb.append(count).append(say);
+                say = res.charAt(i);
+                count = 1;
+            }
+        }
+        sb.append(count).append(say);
+        return sb.toString();
+    }
+    //34. Find the First and Last Position of Element in a sorted Array - Medium
     public static int[] searchRange(int[] nums, int target) {
         if(nums.length == 0)
             return new int[]{-1, -1};
