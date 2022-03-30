@@ -1,10 +1,70 @@
 import javafx.util.Pair;
 import java.util.*;
+
+import static java.util.List.*;
+
 public class Main {
 
     public static void main(String[] args) {
+        
     }
 
+    //15. 3Sum - Medium
+    public static List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i = 0; i < nums.length; i++)
+        {
+            if(i == 0 || nums[i] != nums[i - 1])
+            {
+                twoSum(nums, i, res);
+            }
+        }
+        return res;
+    }
+
+    public static void twoSum(int[] numbers, int target, List<List<Integer>> res) {
+        int i = target + 1;
+        int j = numbers.length - 1;
+        while(i < j)
+        {
+            int sum = numbers[i] + numbers[j] + numbers[target];
+            if(sum == 0)
+            {
+                res.add(Arrays.asList(numbers[target], numbers[i++], numbers[j--]));
+                while(i < j && numbers[i] == numbers[i - 1])
+                    i++;
+            }
+            else if(sum > 0)
+            {
+                j--;
+            }else
+            {
+                i++;
+            }
+        }
+    }
+    //167. Two Sum II - Input Array is Sorted - Mediums
+    public static int[] twoSum(int[] numbers, int target) {
+        int i = 0;
+        int j = numbers.length - 1;
+        while(i < j)
+        {
+            int sum = numbers[i] + numbers[j];
+            if(sum == target)
+            {
+                return new int[]{i + 1, j + 1};
+            }
+            else if(sum > target)
+            {
+                j--;
+            }else
+            {
+                i++;
+            }
+        }
+        return new int[]{-1, -1};
+    }
     //7. Reverse Integer - Medium
     public static int reverse(int x) {
         int rev = 0;
