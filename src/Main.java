@@ -6,6 +6,35 @@ import static java.util.List.*;
 public class Main {
     public static void main(String[] args) {}
 
+    //40. Combination Sum II - Medium
+    public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        combinationSum2Helper(candidates, target, 0, new ArrayList<Integer>(), res);
+        return res;
+    }
+
+    public static void combinationSum2Helper(int[] candidates, int target, int start, List<Integer> combination, List<List<Integer>> res)
+    {
+        if(target == 0)
+        {
+            res.add(new ArrayList<>(combination));
+            return;
+        }else if(target < 0){
+            return;
+        }
+
+        for(int i = start; i < candidates.length; i++)
+        {
+            //avoid duplicates results
+            if(i > start && candidates[i] == candidates[i - 1])
+                continue;
+
+            combination.add(candidates[i]);
+            combinationSum2Helper(candidates, target - candidates[i], i + 1, combination, res);
+            combination.remove(combination.size() - 1);
+        }
+    }
     //39. Combination Sum - Medium
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
