@@ -6,6 +6,36 @@ import static java.util.List.*;
 public class Main {
     public static void main(String[] args) {}
 
+    //43. Multiply Strings- Medium
+    public static String multiply(String num1, String num2) {
+        int m = num1.length();
+        int n = num2.length();
+        int[] pos = new int[m + n];
+        for(int i = m -1; i >= 0; i--)
+        {
+            for(int j = n - 1; j >= 0; j--)
+            {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                int pos1 = i + j;
+                int pos2 = i + j + 1;
+
+                int sum = mul + pos[pos2];
+                pos[pos2] = sum % 10;
+                pos[pos1] += sum / 10;
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < pos.length; i++)
+        {
+            if(pos[i] == 0 && res.length() == 0)
+            {
+                continue;
+            }
+            res.append(pos[i]);
+        }
+        return res.length() == 0? "0": res.toString();
+    }
     //40. Combination Sum II - Medium
     public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
