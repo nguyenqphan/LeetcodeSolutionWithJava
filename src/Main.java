@@ -6,6 +6,41 @@ import static java.util.List.*;
 public class Main {
     public static void main(String[] args) {}
 
+    //Permutation II - Medium - Backtrack with group of numbers
+    public static List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Map<Integer, Integer> counter = new HashMap<Integer, Integer>();
+        for(int num : nums)
+        {
+            Integer value = counter.getOrDefault(num, 0);
+            counter.put(num, value + 1);
+        }
+        permuteUniqueHelper(nums, new ArrayList<>(), res, counter);
+
+        return res;
+    }
+
+    public static void permuteUniqueHelper(int[] nums, List<Integer> permute, List<List<Integer>> res, Map<Integer, Integer> counter)
+    {
+        if(permute.size() == nums.length)
+        {
+            res.add(new ArrayList<Integer>(permute));
+        }
+
+        for(Map.Entry<Integer,Integer> entry: counter.entrySet())
+        {
+            Integer key = entry.getKey();
+            Integer value = entry.getValue();
+            if(value == 0)
+                continue;
+
+            permute.add(key);
+            counter.put(key, value - 1);
+            permuteUniqueHelper(nums, permute, res, counter);
+            permute.remove(permute.size() - 1);
+            counter.put(key, counter.get(key) + 1);
+        }
+    }
     //46. Permutations - Medium
     public static List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
