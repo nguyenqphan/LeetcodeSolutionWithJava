@@ -6,7 +6,42 @@ import static java.util.List.*;
 public class Main {
     public static void main(String[] args) {}
 
-    //Permutation II - Medium - Backtrack with group of numbers
+    //48. Rotate Image - Medium - 
+    public static void rotate(int[][] matrix) {
+        rotateTranspose(matrix);
+        rotateReverse(matrix);
+    }
+
+    public static void rotateTranspose(int[][] matrix)
+    {
+        for(int i = 0; i < matrix.length; i++)
+        {
+            for(int j = i + 1; j < matrix[i].length; j++)
+            {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+    }
+
+    public static void rotateReverse(int[][] matrix)
+    {
+        for(int i = 0; i < matrix.length; i++)
+        {
+            int first = 0;
+            int last = matrix.length - 1;
+            while(first < last)
+            {
+                int temp = matrix[i][first];
+                matrix[i][first] = matrix[i][last];
+                matrix[i][last] = temp;
+                first++;
+                last--;
+            }
+        }
+    }
+    //Permutation II (input array contains duplicates)- Medium - Backtrack with group of numbers
     public static List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         Map<Integer, Integer> counter = new HashMap<Integer, Integer>();
