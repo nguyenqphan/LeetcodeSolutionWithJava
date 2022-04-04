@@ -6,6 +6,31 @@ import static java.util.List.*;
 public class Main {
     public static void main(String[] args) {}
 
+    //46. Permutations - Medium
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        permuteHelper(nums, new ArrayList<Integer>(), res );
+        return res;
+    }
+
+    public static void permuteHelper(int[] nums, List<Integer> permutation, List<List<Integer>> res)
+    {
+        if(permutation.size() == nums.length)
+        {
+            res.add(new ArrayList<Integer>(permutation));
+            return;
+        }
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            if(!permutation.contains(nums[i]))
+            {
+                permutation.add(nums[i]);
+                permuteHelper(nums, permutation, res);
+                permutation.remove(permutation.size() - 1);
+            }
+        }
+    }
     //43. Multiply Strings- Medium
     public static String multiply(String num1, String num2) {
         int m = num1.length();
