@@ -6,7 +6,32 @@ import static java.util.List.*;
 public class Main {
     public static void main(String[] args) {}
 
-    //48. Rotate Image - Medium - 
+    //61. Rotate List - Medium
+    public static ListNode rotateRight(ListNode head, int k) {
+        if(head == null || head.next == null || k == 0)
+            return head;
+
+        ListNode next = head;
+        int i = 0; //the length of the linked list
+        for(i = 1; next.next != null; i++)
+        {
+            next = next.next;
+        }
+        next.next = head; //connect tail to head; now this is a circle linked list
+
+        k = k % i - 1; //new head position
+        ListNode start = head;
+        for(int j = 0; j < k; j++)
+        {
+            start = start.next;
+        }
+
+        head = start.next; // new head;
+        start.next = null; //new tail; 
+
+        return head;
+    }
+    //48. Rotate Image - Medium
     public static void rotate(int[][] matrix) {
         rotateTranspose(matrix);
         rotateReverse(matrix);
