@@ -4,8 +4,42 @@ import java.util.*;
 import static java.util.List.*;
 
 public class Main {
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        System.out.println(simplifyPath("/home/"));
+    }
 
+    //71. Simplify Path - Medium
+    public static String simplifyPath(String path) {
+        String[] names = path.split("/");
+        Deque<String> stack = new ArrayDeque<>();
+        for(String name: names)
+        {
+
+            if(name.equals("."))
+                continue;
+
+            if(name.equals(".."))
+            {
+                if(!stack.isEmpty())
+                {
+                    stack.pop();
+                }
+            }else
+            {
+                stack.push(name);
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        for(String s: stack)
+        {
+            res.append("/");
+            res.append(s);
+        }
+
+
+        return res.toString();
+    }
     //61. Rotate List - Medium
     public static ListNode rotateRight(ListNode head, int k) {
         if(head == null || head.next == null || k == 0)
@@ -27,7 +61,7 @@ public class Main {
         }
 
         head = start.next; // new head;
-        start.next = null; //new tail; 
+        start.next = null; //new tail;
 
         return head;
     }
