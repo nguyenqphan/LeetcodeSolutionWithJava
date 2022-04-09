@@ -8,6 +8,30 @@ public class Main {
         System.out.println(simplifyPath("/home/"));
     }
 
+    //90. subset II - contains duplicates- Medium - Back Track
+    public static List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> sub = new ArrayList<>();
+        Arrays.sort(nums);
+
+        res.add(sub);
+        subsetsWithDupHelper(nums, 0, sub, res);
+        return res;
+    }
+
+    public static void subsetsWithDupHelper(int[] nums, int start, List<Integer> sub, List<List<Integer>> res )
+    {
+        for(int i = start; i < nums.length; i++)
+        {
+            if(i != start && nums[i - 1] == nums[i])
+                continue;
+
+            sub.add(nums[i]);
+            res.add(new ArrayList<>(sub));
+            subsetsWithDupHelper(nums, i + 1, sub, res);
+            sub.remove(sub.size() - 1);
+        }
+    }
     //71. Simplify Path - Medium
     public static String simplifyPath(String path) {
         String[] names = path.split("/");
