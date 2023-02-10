@@ -5,9 +5,32 @@ import static java.util.List.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(simplifyPath("/home/"));
+      
     }
 
+    //787. CHEAPEST FLIGHT WITHIN K STOPS - MEDIUM - BELLMAN FORD ALGORIGHM
+    public static int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+
+        //distance from source to all other nodes
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+        //run only k times since we want shoestest distance in k stops
+        for(int i = 0; i <= k; i++)
+        {
+            int[] temp = Arrays.copyOf(dist, n);
+
+            for(int[] flight : flights)
+            {
+                if(dist[flight[0]] != Integer.MAX_VALUE)
+                {
+                    temp[flight[1]] = Math.min(temp[flight[1]], dist[flight[0]] + flight[2]);
+                }
+            }
+            dist = temp;
+        }
+        return dist[dst] == Integer.MAX_VALUE? -1 : dist[dst];
+    }
     //90. subset II - contains duplicates- Medium - Back Track
     public static List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
@@ -974,7 +997,6 @@ public class Main {
             {
                 cost += p[2];
                 urf.union(p[0], p[1]);
-                n--;
             }
         }
         return cost;
