@@ -8,6 +8,48 @@ public class Main {
       
     }
 
+    //1631. PATH WITH MINIMUM EFFORT
+    public static int minimumEffortPath(int[][] heights) {
+        int row = heights.length;
+        int col = heights[0].length;
+        int[][] costs = new int[row][col];
+        boolean[][] visited = new boolean[row][col];
+        int[][] direction = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for(int i = 0; i < heights.length; i++)
+        {
+            Arrays.fill(costs[i], Integer.MAX_VALUE);
+        }
+        costs[0][0] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) ->a[2] - b[2]);
+        pq.offer(new int[]{0, 0, 0});
+
+        while(pq.size() > 0)
+        {
+            int[] curr = pq.poll();
+            int x = curr[0];
+            int y = curr[1];
+            int dist = curr[2];
+            visited[x][y] = true;
+            for(int[] dir: direction)
+            {
+                int xPos = x + dir[0];
+                int yPos = y + dir[1];
+
+                if((xPos < 0 || xPos >= row || yPos < 0 || yPos >= col)  || visited[xPos][yPos])
+                    continue;
+
+                int diff= Math.abs(heights[x][y] - heights[xPos][yPos]);
+                int max = Math.max(diff, costs[x][y]);
+
+                if(max < costs[xPos][yPos])
+                {
+                    costs[xPos][yPos] = max;
+                    pq.offer(new int[]{xPos, yPos, max});
+                }
+            }
+        }
+        return costs[row - 1][col - 1];
+    }
     //787. CHEAPEST FLIGHT WITHIN K STOPS - MEDIUM - BELLMAN FORD ALGORIGHM
     public static int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
 
