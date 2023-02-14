@@ -8,7 +8,49 @@ public class Main {
       
     }
 
-    //1631. PATH WITH MINIMUM EFFORT
+    //210. COURSE SCHEDULE II - MEDIUM - Topological Shorting - Kahn's Algorithm
+    public static int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] res = new int[numCourses];
+        int[] inDegree = new int[numCourses];
+        int index = 0; //index of the result
+        List<List<Integer>> adjacencies = new ArrayList<List<Integer>>();
+        Deque<Integer> queue = new ArrayDeque<>(); //contains all inDegree = 0;
+        for(int i = 0; i < numCourses; i++)
+        {
+            adjacencies.add(new ArrayList<>());;
+        }
+        for(int[] pre: prerequisites)
+        {
+            inDegree[pre[0]]++;
+            adjacencies.get(pre[1]).add(pre[0]);
+        }
+        for(int i = 0; i < numCourses; i++)
+        {
+            if(inDegree[i] == 0)
+            {
+                queue.offer(i);
+            }
+        }
+
+        while(!queue.isEmpty())
+        {
+            int curr = queue.poll();
+            res[index++] = curr;
+            for(int course: adjacencies.get(curr))
+            {
+                inDegree[course]--;
+                if(inDegree[course] == 0)
+                {
+                    queue.offer(course);
+                }
+            }
+
+            if(queue.isEmpty() && index != numCourses)
+                return new int[]{};
+        }
+        return (queue.isEmpty() && index != numCourses)? new int[]{}: res;
+    }
+    //1631. PATH WITH MINIMUM EFFORT - MEDIUM - DIJKSTRA ALGORITHM
     public static int minimumEffortPath(int[][] heights) {
         int row = heights.length;
         int col = heights[0].length;
@@ -50,14 +92,14 @@ public class Main {
         }
         return costs[row - 1][col - 1];
     }
-    //787. CHEAPEST FLIGHT WITHIN K STOPS - MEDIUM - BELLMAN FORD ALGORIGHM
+    //787. CHEAPEST FLIGHT WITHIN K STOPS - MEDIUM - BELLMAN FORD ALGORITHM
     public static int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
 
         //distance from source to all other nodes
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[src] = 0;
-        //run only k times since we want shoestest distance in k stops
+        //run only k times since we want shortest distance in k stops
         for(int i = 0; i <= k; i++)
         {
             int[] temp = Arrays.copyOf(dist, n);
