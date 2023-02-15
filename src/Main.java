@@ -7,6 +7,51 @@ public class Main {
     public static void main(String[] args) {
       
     }
+    //269. ALIEN DICTIONARY - HARD - KAHN'S ALGORITHM - TOPOLOGICAL SHORTING
+    public static String alienOrder(String[] words) {
+        if(words == null || words.length == 0) return "";
+        //1. Init inDegree & topoMap
+        HashMap<Character, Integer> inDegree = new HashMap<>();
+        HashMap<Character, List<Character>> topoMap = new HashMap<>();
+        for(String word : words)
+            for(char c : word.toCharArray()) {
+                inDegree.put(c, 0);
+                topoMap.put(c, new ArrayList<Character>());
+            }
+        //2. Build Map
+        for(int i = 0; i < words.length - 1; i++) {
+            String w1 = words[i], w2 = words[i + 1];
+            if(w1.length() > w2.length() && w1.startsWith(w2))
+                return "";
+            for(int j = 0; j < Math.min(w1.length(), w2.length()); j++) {
+                char parent = w1.charAt(j), child = w2.charAt(j);
+                if(parent != child) {
+                    inDegree.put(child, inDegree.get(child) + 1);
+                    topoMap.get(parent).add(child);
+                    break;
+                }
+            }
+        }
+        //3. Topo sort
+        StringBuilder res = new StringBuilder();
+        while(!inDegree.isEmpty()) {
+            boolean flag = false;
+            for(Character c : inDegree.keySet()) {
+                if(inDegree.get(c) == 0) {
+                    flag = true;
+                    res.append(c);
+                    List<Character> children = topoMap.get(c);
+                    for(Character ch : children)
+                        inDegree.put(ch, inDegree.get(ch) - 1);
+                    inDegree.remove(c);
+                    break;
+                }
+            }
+            if(flag == false)
+                return "";
+        }
+        return res.toString();
+    }
 
     //210. COURSE SCHEDULE II - MEDIUM - Topological Shorting - Kahn's Algorithm
     public static int[] findOrder(int numCourses, int[][] prerequisites) {
