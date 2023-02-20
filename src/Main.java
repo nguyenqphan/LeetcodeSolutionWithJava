@@ -5,9 +5,61 @@ import static java.util.List.*;
 
 public class Main {
     public static void main(String[] args) {
-      
+
     }
-    //269. ALIEN DICTIONARY - HARD - KAHN'S ALGORITHM - TOPOLOGICAL SHORTING
+    //310. MINIMUM HEIGHT TREES - MEDIUM - TOPOLOGICAL SORTING WITH KAHN'S ALGO - CUT LEAVES
+    public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        int[] indegrees = new int[n];
+        Map<Integer, List<Integer>> adjacencies = new HashMap<>();
+        List<Integer> leaves = new ArrayList<>(); //result
+        //edge case
+        if(n < 2)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                leaves.add(i);
+            }
+            return leaves;
+        }
+
+        for(int[] edge: edges)
+        {
+            adjacencies.putIfAbsent(edge[0], new ArrayList<>());
+            adjacencies.get(edge[0]).add(edge[1]);
+            adjacencies.putIfAbsent(edge[1], new ArrayList<>());
+            adjacencies.get(edge[1]).add(edge[0]);
+            indegrees[edge[0]]++;
+            indegrees[edge[1]]++;
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            if(indegrees[i] == 1)
+            {
+                leaves.add(i);
+            }
+        }
+        int remainingNodes = n;
+        while(remainingNodes > 2)
+        {
+            remainingNodes -= leaves.size();
+            List<Integer> newLeaves = new ArrayList<>();
+            for(int leave: leaves)
+            {
+                for(int node: adjacencies.get(leave))
+                {
+                    indegrees[node]--;
+                    if(indegrees[node] == 1)
+                    {
+                        newLeaves.add(node);
+                    }
+                }
+            }
+            leaves = newLeaves;
+        }
+        return leaves;
+    }
+    //269. ALIEN DICTIONARY - HARD - KAHN'S ALGORITHM - TOPOLOGICAL SORTING
     public static String alienOrder(String[] words) {
         if(words == null || words.length == 0) return "";
         //1. Init inDegree & topoMap
@@ -21,6 +73,7 @@ public class Main {
         //2. Build Map
         for(int i = 0; i < words.length - 1; i++) {
             String w1 = words[i], w2 = words[i + 1];
+            //check if w2 is a prefix of w1
             if(w1.length() > w2.length() && w1.startsWith(w2))
                 return "";
             for(int j = 0; j < Math.min(w1.length(), w2.length()); j++) {
