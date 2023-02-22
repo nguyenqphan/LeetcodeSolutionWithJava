@@ -8,6 +8,38 @@ public class Main {
 
     }
 
+    //975. ODD EVEN JUMP - Hard
+    public static int oddEvenJumps(int[] arr) {
+        int res = 1; //alway reach the end staring at last index
+        int n = arr.length;
+        boolean[][] dp = new boolean[arr.length][2];
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        map.put(arr[n - 1], n - 1);
+        dp[n - 1][0] = true; //odd step
+        dp[n - 1][1] = true; //even step
+
+        for(int i = n - 2; i >=0; i--)
+        {
+            //take odd step
+            Integer nextGreater = map.ceilingKey(arr[i]);
+            if(nextGreater != null)
+            {
+                dp[i][0] = dp[map.get(nextGreater)][1];
+            }
+
+            //take even step
+            Integer nextLower = map.floorKey(arr[i]);
+            if(nextLower != null)
+            {
+                dp[i][1] = dp[map.get(nextLower)][0];
+            }
+            map.put(arr[i], i);
+
+            if(dp[i][0])
+                res++;
+        }
+        return res;
+    }
     //2454. NEXT GREATER ELEMENT IV
     public static int[] secondGreaterElement(int[] nums) {
         Deque<Integer> stack1 = new ArrayDeque<>();
