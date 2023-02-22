@@ -7,6 +7,47 @@ public class Main {
     public static void main(String[] args) {
 
     }
+    //556. NEXT GREATER ELEMENT III - MEDIUM
+    public static int nextGreaterElement(int n) {
+        char[] num = String.valueOf(n).toCharArray();
+        int i = num.length - 2;
+        int j = num.length - 1;
+
+        while(i >= 0 && num[i] >= num[i + 1])
+            i--;
+
+        if(i < 0)
+            return -1;
+
+        while(j >= 0 && num[j] <= num[i])
+            j--;
+
+        nextGreaterElementSwap(num, i, j);
+        nextGreaterElementReverse(num, i + 1);
+
+        try{
+            return Integer.parseInt(new String(num));
+        }catch (Exception e)
+        {
+            return - 1;
+        }
+    }
+    public static void nextGreaterElementSwap(char[] num, int i, int j)
+    {
+        char temp = num[i];
+        num[i] = num[j];
+        num[j] = temp;
+    }
+    public static void nextGreaterElementReverse(char[] num, int i)
+    {
+        int j = num.length - 1;
+        while(i < j)
+        {
+            nextGreaterElementSwap(num, i, j);
+            i++;
+            j--;
+        }
+    }
     //310. MINIMUM HEIGHT TREES - MEDIUM - TOPOLOGICAL SORTING WITH KAHN'S ALGO - CUT LEAVES
     public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
         int[] indegrees = new int[n];
