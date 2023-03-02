@@ -680,50 +680,49 @@ public class Main {
         }
         return res;
     }
-    //18. 4sum - Medium
+    //18. 4Sum - Medium
     public static List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> res = new ArrayList<>();
-        int size = nums.length - 1;
-        if(nums.length < 4)
-            return res;
-
         Arrays.sort(nums);
-        for(int i = 0; i <= size - 3; i++)
-        {
-            if(i != 0 && nums[i] == nums[i - 1])
-                continue;
-
-            for(int j = i + 1; j <= size - 2; j++)
+        return kSum(nums, target, 0, 4);
+    }
+    public static List<List<Integer>> kSum(int[] nums, long target, int start, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        // If we have run out of numbers to add, return res.
+        if (start == nums.length) {
+            return res;
+        }
+        if (k == 2) {
+            return twoSum(nums, target, start);
+        }
+        for (int i = start; i < nums.length; ++i) {
+            if (i == start || nums[i - 1] != nums[i])
             {
-                if(j != i + 1 && nums[j] == nums[j - 1])
-                    continue;
-
-                int left = j + 1;
-                int right = size;
-                while(left < right)
-                {
-                    int sum = nums[i] + nums[j] + nums[left] + nums[right];
-                    if(sum == target)
-                    {
-                        List<Integer> ans = Arrays.asList(nums[i], nums[j], nums[left++], nums[right--]);
-                        res.add(ans);
-                        while(left < right && nums[left] == nums[left - 1])
-                            left++;
-                    }else if(sum < target)
-                    {
-                        left++;
-                    }else
-                    {
-                        right--;
-                    }
-
+                List<List<Integer>> temp = kSum(nums, target - nums[i], i + 1, k - 1);
+                for (List<Integer> subset : temp) {
+                    res.add(new ArrayList<>(Arrays.asList(nums[i])));
+                    res.get(res.size() - 1).addAll(subset);
                 }
             }
         }
-
         return res;
     }
 
+    public static List<List<Integer>> twoSum(int[] nums, long target, int start) {
+        List<List<Integer>> res = new ArrayList<>();
+        int lo = start, hi = nums.length - 1;
+
+        while (lo < hi) {
+            int currSum = nums[lo] + nums[hi];
+            if (currSum < target || (lo > start && nums[lo] == nums[lo - 1])) {
+                ++lo;
+            } else if (currSum > target || (hi < nums.length - 1 && nums[hi] == nums[hi + 1])) {
+                --hi;
+            } else {
+                res.add(Arrays.asList(nums[lo++], nums[hi--]));
+            }
+        }
+        return res;
+    }
     //15. 3Sum And Two sum - Medium
     public static List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
