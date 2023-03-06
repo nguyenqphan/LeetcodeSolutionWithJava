@@ -8,6 +8,21 @@ public class Main {
 
     }
 
+    //89. Gray Code - Medium - Bit Shifts
+    public static List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<>();
+        res.add(0);
+        for(int i = 1; i <= n; i++)
+        {
+            int size = res.size() - 1;
+            int mask = 1 << (i - 1);
+            for(int j = size; j >= 0; j--)
+            {
+                res.add( mask + res.get(j));
+            }
+        }
+        return res;
+    }
     //371. SUM OF TWO INTEGERS
     public static int getSum(int a, int b) {
         while(b != 0)
