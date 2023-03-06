@@ -8,6 +8,17 @@ public class Main {
 
     }
 
+    //371. SUM OF TWO INTEGERS
+    public static int getSum(int a, int b) {
+        while(b != 0)
+        {
+            int answer = a ^ b;
+            int carry = (a & b) << 1;
+            a = answer;
+            b = carry;
+        }
+        return a;
+    }
     // 190. RESERVE BITS - EASY - MASK AND BIT SHIFT
     public static int reverseBits(int num) {
         num = ((num & 0xffff0000) >>> 16) | ((num & 0x0000ffff) << 16);
