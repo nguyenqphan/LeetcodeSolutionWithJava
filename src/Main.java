@@ -8,6 +8,17 @@ public class Main {
 
     }
 
+    //137. SINGLE NUMBER II - Medium - Tricks
+    public static int singleNumber(int[] nums) {
+        int seenOnce = 0;
+        int seenTwice = 0;
+        for(int num : nums)
+        {
+            seenOnce = ~seenTwice & (seenOnce^num);
+            seenTwice = ~seenOnce & (seenTwice^num);
+        }
+        return seenOnce;
+    }
     //338. COUNTING BITS - EASY
     public static int[] countBits(int n) {
         int[] res = new int[n + 1];
@@ -16,7 +27,6 @@ public class Main {
         {
             res[i] = res[i/2] + i%2;
         }
-
         return res;
     }
     //201. BITWISE AND OF NUMBERS RANGE - Medium - bit shifts
