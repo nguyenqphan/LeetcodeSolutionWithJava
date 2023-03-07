@@ -7,7 +7,29 @@ public class Main {
     public static void main(String[] args) {
 
     }
+    //260. Single Number III - Medium - Trick;
+    public static int[] singleNumberIII(int[] nums) {
+        int twoNumbers = 0;
+        int[] res = new int[2];
+        for(int num: nums)
+        {
+            twoNumbers ^= num;
+        }
+        int rightMostBit = (~twoNumbers + 1) & (twoNumbers); //(-twoNumber) & twoNumbers
 
+        for(int num: nums)
+        {
+            if((rightMostBit & num) == 0)
+            {
+                res[0] ^= num;
+            }
+            else
+            {
+                res[1]^= num;
+            }
+        }
+        return res;
+    }
     //137. SINGLE NUMBER II - Medium - Tricks
     public static int singleNumber(int[] nums) {
         int seenOnce = 0;
