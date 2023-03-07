@@ -8,6 +8,17 @@ public class Main {
 
     }
 
+    //338. COUNTING BITS - EASY
+    public static int[] countBits(int n) {
+        int[] res = new int[n + 1];
+
+        for(int i = 1; i <= n; i++)
+        {
+            res[i] = res[i/2] + i%2;
+        }
+
+        return res;
+    }
     //201. BITWISE AND OF NUMBERS RANGE - Medium - bit shifts
     public static int rangeBitwiseAnd(int left, int right) {
         int shift = 0;
