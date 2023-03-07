@@ -8,6 +8,17 @@ public class Main {
 
     }
 
+    //201. BITWISE AND OF NUMBERS RANGE - Medium - bit shifts
+    public static int rangeBitwiseAnd(int left, int right) {
+        int shift = 0;
+        while(left != right)
+        {
+            left >>= 1;
+            right >>= 1;
+            shift++;
+        }
+        return left << shift;
+    }
     //89. Gray Code - Medium - Bit Shifts
     public static List<Integer> grayCode(int n) {
         List<Integer> res = new ArrayList<>();
